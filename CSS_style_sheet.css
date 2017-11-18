@@ -1,39 +1,96 @@
+.width_ul{
+  width:530px
+    
+}
+
 body {
   background-color:white;
   font-size:15px;
   background-position:center
-  }
     
+}
+
+
 .core_header{
   background-color:RGB(146,178,217);
   font-size:15px;
-  background-position:center;           
-  }
-         
+  background-position:left; 
+  width:auto;
+  height:auto;
+  
+}
+
+.logo_style{
+  
+  left:0px;
+  top:0px;
+  
+  
+}
+
 .main_menu{
+  
+  text-transform:uppercase;
+  background-color:#3A3A3A;
+  text-align:left
+  
+}
+         
+.main_menu_ul{
   list-style-type:none;
-  margin:0;
+  font-weight:bold;
+  text-align:left
+  border-collapse:collapse;
+  margin:auto;
   padding:0;
   overflow: hidden;
-  }
+  
+
+  
+  
+}
          
-.menu_li_niv1{
+.menu_a{
+  
+  text-decoration:none;
+    font-size:14px;
   float:left;
-  font-weight:bold;
   display : inline;
-  padding:10px;
-  }
+  line-height:20px;
+  padding:8px;
+  color:#FFF;
+}
          
 .footer_style{
   background-color:rgb(0,0,0);
   font-size:15px;
   background-position:center; 	
-  }
-         
-.menu_footer{
-   color:rgb(100,100,100);
-   float:left;
-   font-weight:bold;
-   display : inline;
-   padding:10px;	
-  }
+}
+
+section{
+  width:auto;
+}
+
+.footerC1{
+  width:630px
+  font-size:15px;
+  text-decoration:none;
+  color:#FFF;
+  background-position:left;
+  background-color:#3A3A3A;
+}
+
+.footer_ul{
+  list-style-type:none;
+  text-align:left;
+  margin:auto;
+  padding:0;
+  overflow: hidden;
+}
+
+.footer_li{
+  background-color:#3A3A3A;
+  float:left;
+  display : inline;
+  padding:8px;
+}
