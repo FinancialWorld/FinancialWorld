@@ -1,12 +1,44 @@
+body{
+  margin-top:0px;
+  width:100%;
+  height:auto;
+  max-width:1000px;
+  text-align:justify;
+}
+
+footer{
+  background-color:#3A3A3A;
+  padding-bottom:0px;
+  height:10%;
+  width:100%;
+  
+}
+
+.fixed-position{
+  position:fixed; /* *** */
+  width:100%; /* *** */
+}
+
 #head {
   background-color:#000000;
-  position:fixed;
+  
   /* largeur : 100% */
-  width:100%;
+  
   /*hauteur de l'entete*/
-  height:100px;
+  height:6%;
+  display:block;
+  padding-top:0px; /* *** */
   
-  
+}
+
+.section1{
+  padding-top:100px; /* *** */
+  padding-left:200px; /* *** */
+  padding-right:10px; /* *** */
+}
+
+.body-style{
+  padding-top:0px; /* *** */
 }
 
 #logo{
@@ -19,11 +51,16 @@
 
 .menu{ /* class in <div> */
   /* pour placer le menu en bas de l'en-tete*/
-  margin-top:0;
-  
-  margin-top:1%;
-  margin-bottom:0%;
   background-color:#3A3A3A;
+  width:auto; 
+  display:block; 
+  height:24px;
+  
+  
+  /* TB : pour fixer le menu sur la page*/
+  padding-top:5px; /* *** */
+  padding-bottom:15px; /* *** */
+  padding-left:200px; /* *** */
   
 }
 
@@ -145,97 +182,21 @@
 }
 
 
-body{
-  
-}
-
-#menu-deroulant-niv0 ul {
-  /* couleur de fond de la liste déroulante */
-  background-color:#3A3A3A;
-  position: absolute;
-/* on cache les sous menus complètement sur la gauche */
-  left: -999em;
-  text-align: left;
-  /* Priorité de l'objet*/
-  z-index: 1000;
-  
-}
-
-#menu-deroulant-niv0 li {
-  
-  /* menu horizontale pour tous les niveaux */
-  display: inline-block;
-  /* Majuscules*/
-  text-transform:uppercase;
-  
-  
-}    
-
-#menu-deroulant-niv0 a { /*pour tous les niveaux */
+.footer-style{
   text-decoration: none;
-  display: block;
+}
+#footer-menu{
+  text-decoration: none;
+  padding-left:200px;
+}
+
+#footer-menu li{
+  display:inline-block;
+  text-decoration: none;
+  padding:1%;
+}
+
+#footer-menu a{
+  text-decoration: none;
   color:#FFF;
-  /* Hauteur des cellules*/
-  padding:10px;
-
-}
-
-#home a { /* ID in li*/
-  display:inherit;
-  color:#000000;
-  background-color:white;
-  /*Hauteur de la ligne du menu :*/
-  
-  color:black;
-    }
-
-#menu-deroulant-niv0 li:hover {
-/* Au survol des li du menu on replace les sous menus */
-  background-color:silver;
-}
-
-#menu-deroulant-niv0 a:hover{
-/* Au survol des li du menu on replace les sous menus */
-  color:blue;
-  font-weight:bold;
-}
-
-#menu-deroulant-niv0 li:hover ul {
-/* Au survol des li du menu on replace les sous menus */
-  left: auto;
-}
-
-
-
-#menu-deroulant-niv1 li {
-  /* */
-  
-  /* li cote cote */
-  float:left;
-  text-transform:none;
-    
-}
-
-#menu-deroulant-niv1 a {
-  /* */
-   
-}
-
-#menu-deroulant-niv1 li:hover {
-/* Au survol des li du menu on replace les sous menus */
-  background-color:silver;
-  color:red;
-  font-weight:bold;
-  
-  
-}
-
-#menu-deroulant-niv1 a:hover{
-/* Au survol des li du menu on replace les sous menus */
-  color:blue;
-}
-
-
-body{
-  
 }
