@@ -10,33 +10,143 @@
 }
 
 #logo{
-  margin-top:5px;
-  margin-left:5px;
+  margin-top:1%;
+  margin-left:1%;
   width:35%;
+  /*taille max du logo*/
+  max-width:300px;
 }
 
 .menu{ /* class in <div> */
   /* pour placer le menu en bas de l'en-tete*/
   margin-top:0;
   
+  margin-top:1%;
+  margin-bottom:0%;
   background-color:#3A3A3A;
   
 }
 
 
 #menu-deroulant-niv0 { /* in <ul> */
-  padding: 10; /* Pour avoir une marge sur la gauche */
+  padding:0 ; /* Pour avoir une marge sur la gauche */
     
 }
 
 #menu-deroulant-niv0, #menu-deroulant ul {
-  margin-top: 30; /* Inutile */
+  position:abolute;
+  margin-top: 0; /* Inutile */
   list-style: none;
+  margin-bottom:0px;
     
 }
 #menu-deroulant-niv0 {
   /* pour aligner le manu à gauche */
   text-align: left; 
+}
+
+#menu-deroulant-niv0 ul, #menu-deroulant-niv1 ul {
+  /* couleur de fond de la liste déroulante */
+  background-color:#3A3A3A;
+  position: absolute;
+/* on cache les sous menus complètement sur la gauche */
+  left: -999em;
+  text-align: left;
+  /* Priorité de l'objet*/
+  z-index: 1000;
+  
+}
+
+#menu-deroulant-niv0 li {
+  
+  /* menu horizontale pour tous les niveaux */
+  display: inline-block;
+  
+  /* Majuscules*/
+  text-transform:uppercase;
+  padding:1%;
+  
+}    
+
+#menu-deroulant-niv0 a { /*pour tous les niveaux */
+  text-decoration: none;
+  display: inline-block;
+  color:#FFF;
+  /* Hauteur des cellules*/
+  
+
+}
+
+#home a { /* ID in li*/
+  display:inherit;
+  color:#000000;
+  /*Hauteur de la ligne du menu :*/
+  
+  color:black;
+  padding:10%;
+  background-color:white;
+    }
+
+#menu-deroulant-niv0 li:hover {
+
+  
+  background-color:silver;
+  
+}
+
+#menu-deroulant-niv0 a:hover,{
+
+  
+  color:blue;
+  font-weight:bold;
+  
+}
+
+#menu-deroulant-niv0 li:hover ul {
+/* Au survol des li du menu on replace les sous menus */
+  left: auto;
+  
+}
+
+
+
+#menu-deroulant-niv1 li {
+  /* */
+  
+  /* li cote cote */
+  float:left;
+  text-transform:none;
+  padding:4%;
+  
+    
+}
+
+#menu-deroulant-niv1 a {
+  /* */
+  
+   
+}
+
+#menu-deroulant-niv1 li:hover {
+/* Au survol des li du menu on replace les sous menus */
+  background-color:silver;
+  
+  font-weight:bold;
+  
+  
+  
+}
+
+#menu-deroulant-niv1 a:hover{
+/* Au survol des li du menu on replace les sous menus */
+  color:blue;
+  
+  
+}
+
+
+body{
+  
 }
 
 #menu-deroulant-niv0 ul {
