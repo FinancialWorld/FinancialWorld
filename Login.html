@@ -5,16 +5,102 @@
   <title>FinancialWorld</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- To ensure proper rendering and touch zooming -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> <!-- Obligatoire pour importer la mise en forme du menu  -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!-- For the drop down menu  -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> <!-- For the drop down menu  -->
-</head>
+ 
+.page-width
+    {
+        max-width:1170px;
+        margin:0 auto;
+        padding:0 20px;
+    }
+  
+.header {
+        position: relative;
+        content: 'NEW';
+        position: absolute;
+        top: 19px;
+        left: 0;
+        font-size: 9px;
+        font-weight: 400;
+        line-height: 1.6;
+        margin: -15px 0 0 65px;
+        background: #a62436;
+        padding: 1px 6px;
+        border-radius: 100px;
+        text-shadow: -1px -1px 1px rgba(0,0,0,0.3);
+    }
+  
+  .header a:hover
+    {
+        text-decoration: none !important;
+    }
+  
+  .header.subchannels
+    {
+        z-index:104;
+        -webkit-text-stroke:0;
+        position:relative;
+    }
 
+    .header.subchannels ul
+    {
+        margin:0;
+        padding:0;
+        list-style:none;
+        letter-spacing:normal;
+    }
+  
+  .header.subchannels ul > li
+    {
+        display:inline-block;
+        margin:0;
+        padding:0;
+        border-bottom:solid 2px transparent;
+    }
+
+    .header.subchannels ul > li > a
+    {
+        display:inline-block;
+        padding:9px 8px 6px 8px;
+    }
+
+    .header.subchannels li > a
+    {
+        font-size:14px;
+    }
+
+    .header.subchannels li.separator
+    {
+        margin:0;
+        background-color:transparent;
+    }
+  
+  
+  <!-- pre-subchannel op: investing -->
+  <!-- post-subchannel op: investing -->
+  <div class="header subchannels">
+    <div class="inner page-width">
+        <ul class="item-investing">
+            <li class="channel-title"><a
+                  href="">Investing</a></li>
+            <li class="separator">&raquo;</li>
+                            <li><a href="/investing/mutual-funds/">Mutual Funds</a></li>
+                                <li><a href="">ETFs</a></li>
+                                <li><a href="">Investing Strategy</a></li>
+                                <li><a href="">Automated Investing</a></li>
+                                <li><a href="">Bonds & Fixed Income</a></li>
+                                <li><a href="">Financial Analysis</a></li>
+                                <li><a href="">Economics</a></li>
+                                <li><a href="">Calculators</a></li>
+                                <li><a href="">Tutorials</a></li>
+         </ul>
+    </div>
+</div>
+  
 <body>
   <div rel="stylesheet" class="niveau_1">
     <p>Sign in to FinancialWord<p>
   </div>
-  <form action="/action_page.php">
+  <form action="A_Définir"> <!-- action=/action_page.php-->
     Username: <input type="text" name="Username" placeholder="Username"><br>
     <!-- The placeholder attribute specifies a short hint that describes the expected value of an input field 
     (e.g. a sample value or a short description of the expected format).
@@ -23,5 +109,5 @@
     -->
     Password: <input type="password" name="Password" placeholder="Password"><br>
     <input type="submit" value="Submit">
-  </form>
+   </form>
 </body>
