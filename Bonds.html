@@ -2,7 +2,7 @@
 <!-- -->
 <html lang="en">
 <head>
-  <title>FinancialWorld</title>
+  <title>Bonds</title>
   <meta http-equiv="Content-Type" content="text/html/>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- To ensure proper rendering and touch zooming -->
@@ -12,6 +12,171 @@
   <meta name="description" content="Bond pricing and SCR Calculation: methods, simulator, excel implementation, free download. Vanilla, Floating, Inflation linked, Convertible bonds. Get real time and historical stock prices from web with excel for free. Build your own technical and dynamic analysis model within excel and beat the market>
   <link rel="stylesheet" href="stylesheet.css">
 </head>
-<body>
 
-
+  
+  
+  <header>
+    <nav class="navbar navbar-inverse"> <!-- standard bar navigation-->
+      <div class="container-fluid"> <!-- for a full width container, spanning the entire width of the viewport -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+          </button>
+          <a class="navbar-brand" href="#">FinancialWorld</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bonds<span class="caret"></span></a> <!-- caret : to add a drop down button  -->
+              <ul class="dropdown-menu">
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Vanilla</strong></a>
+                    <ul class="dropdown-submenu">
+                      <li><a href="#">Presentation</a></li>
+                      <li><a href="#">Valuation Method</a></li>
+                      <li><a href="#">Plus</a></li>
+                    </ul>
+                  </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Indexed</strong></a>
+                    <ul class="dropdown-submenu">
+                        <li><a href="#">Presentation</a></li>
+                        <li><a href="#">Valuation Method</a></li>
+                        <li><a href="#">Plus</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Convertible</strong></a>
+                    <ul class="dropdown-submenu">
+                        <li ><a href="#">Presentation</a></li>
+                        <li><a href="#">Valuation Method</a></li>
+                        <li><a href="#">Plus</a></li>
+                    </ul>
+                </li>
+              </ul>  
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <span style="font-size:14px">Market</span><span class="caret"></span></a> <!-- caret : to add a drop down button  -->
+              <ul class="dropdown-menu">
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <strong><span style="font-size:15px">Interest Rates</span></strong></a>
+                    <ul class="dropdown-submenu">
+                      <li><a href="#">Fixed Rates Notes</a></li>
+                      <li><a href="#">Indexed rates Notes</a></li>
+                      <li><a href="#">-</a></li>
+                    </ul>
+                  </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <strong><span style="font-size:15px">Spread</span></strong></a>
+                    <ul class="dropdown-submenu">
+                        <li><a href="#">Bonds</a></li>
+                        <li><a href="#">Loans</a></li>
+                        <li><a href="#">Infrastruture Debt</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <strong><span style="font-size:15px">Equity</span></strong></a>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <strong><span style="font-size:15px">Estate</span></strong></a>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <strong><span style="font-size:15px">Currency</span></strong></a>
+                </li>
+              </ul>  
+            </li
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="Login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  
+  <body>
+    <nav class="navbar navbar-inverse"> <!-- standard bar navigation-->
+      <div class="container-fluid"> <!-- for a full width container, spanning the entire width of the viewport -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+          </button>
+          <a class="navbar-brand" href="#">FinancialWorld</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bonds<span class="caret"></span></a> <!-- caret : to add a drop down button  -->
+              <ul class="dropdown-menu">
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Vanilla</strong></a>
+                    <ul class="dropdown-submenu">
+                      <li><a href="#">Presentation</a></li>
+                      <li><a href="#">Valuation Method</a></li>
+                      <li><a href="#">Plus</a></li>
+                    </ul>
+                  </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Indexed</strong></a>
+                    <ul class="dropdown-submenu">
+                        <li><a href="#">Presentation</a></li>
+                        <li><a href="#">Valuation Method</a></li>
+                        <li><a href="#">Plus</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Convertible</strong></a>
+                    <ul class="dropdown-submenu">
+                        <li ><a href="#">Presentation</a></li>
+                        <li><a href="#">Valuation Method</a></li>
+                        <li><a href="#">Plus</a></li>
+                    </ul>
+                </li>
+              </ul>  
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <span style="font-size:14px">Market</span><span class="caret"></span></a> <!-- caret : to add a drop down button  -->
+              <ul class="dropdown-menu">
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <strong><span style="font-size:15px">Interest Rates</span></strong></a>
+                    <ul class="dropdown-submenu">
+                      <li><a href="#">Fixed Rates Notes</a></li>
+                      <li><a href="#">Indexed rates Notes</a></li>
+                      <li><a href="#">-</a></li>
+                    </ul>
+                  </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <strong><span style="font-size:15px">Spread</span></strong></a>
+                    <ul class="dropdown-submenu">
+                        <li><a href="#">Bonds</a></li>
+                        <li><a href="#">Loans</a></li>
+                        <li><a href="#">Infrastruture Debt</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <strong><span style="font-size:15px">Equity</span></strong></a>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <strong><span style="font-size:15px">Estate</span></strong></a>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">SCR <strong><span style="font-size:15px">Currency</span></strong></a>
+                </li>
+              </ul>  
+            </li
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="Login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </body>
+  
+  
