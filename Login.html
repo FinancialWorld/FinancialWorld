@@ -15,8 +15,13 @@
     <p>Sign in to FinancialWord<p>
   </div>
   <form action="/action_page.php">
-    Username: <input type="text" name="Username" value="Test"><br>
-    Password: <input type="password" name="Password" value="XXXXXX"><br>
+    Username: <input type="text" name="Username" placeholder="Username"><br>
+    <!-- The placeholder attribute specifies a short hint that describes the expected value of an input field 
+    (e.g. a sample value or a short description of the expected format).
+    The short hint is displayed in the input field before the user enters a value.
+    Note: The placeholder attribute works with the following input types: text, search, url, tel, email, and password.
+    -->
+    Password: <input type="password" name="Password" placeholder="Password"><br>
     <input type="submit" value="Submit">
   </form>
 </body>
