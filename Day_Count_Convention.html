@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  	<title>Bonds</title>
+  	<meta http-equiv="Content-Type" content="text/html"/>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1"/> <!-- To ensure proper rendering and touch zooming -->
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> <!-- Obligatoire pour importer la mise en forme du menu  -->
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">	</script> <!-- For the drop down menu  -->
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> <!-- For the drop down menu  -->
+  	<meta name="description" content=""/>
+
+  <style>
+  
+/***** GENERAL *****/
+        header{
+        	position:relative; 
+        }
+        
+        body{
+            position:relative;
+            left:0%;
+            padding-left:10%; /* marge a gauche : auto fit */
+            2width:auto; /* larmeur max de la page */
+            2height: 100%;
+            overflow:auto;
+            background-position:center;
+        }
+
+        h1{
+            position:relative;
+            left:0%;
+            color:black
+        }
+        h2, h3{
+            position:relative;
+            left:2%;
+            color:black
+        }
+        
+        p{
+        	position:relative;
+            left:0%;
+            max-width:90%; /* marge de 10% à droite*/
+            text-align:justify;
+        }
+/***** GENERAL (FIN) *****/
+
+
+
+/***** IFRAME *****/
+		iframe{
+            position:relative;
+            left:0%;
+            z-index:0;/* >>>>EXCEL: mettre -1 pour empecher l'acces au embed sheet excel >>> bien pour éviter le téléchargement*/
+        }
+/***** IFRAME (FIN) *****/
+
+
+
+/***** NAVIGATION BAR HEADER *****/
+        .nav-header-div{
+            position:sticky;
+            left:0px;
+            top:0px;
+            z-index:1;
+                }
+/***** NAVIGATION BAR HEADER (FIN) *****/   
+      
+      
+      
+/***** BOXES *****/       
+        .tip-box{
+        	position: relative;
+            left:0%; /* Marge par rapport à body*/ 
+            max-width:90%; /* 10% de marge à doite (paragraphe) + 2% (a cause marge à gauche)*/
+            background:rgb(252, 252, 252);
+            padding: 5px 5px 5px 20px;
+            border-left: 6px solid rgb(220, 220, 220);
+            z-index:-1;
+        }
+        
+        #ampoule-img{
+      		width:20px;
+            height:20px;
+      }
+      
+      
+/***** BOXES (FIN) *****/   
+        
+  </style>
+
+</head>
+
+
+<div class="nav-header-div"> <!-- for stiking the navbar -->
+      <header class="nav-header">
+        <nav class="navbar navbar-inverse"> <!-- standard bar navigation-->
+          <div class="container-fluid"> <!-- for a full width container, spanning the entire width of the viewport -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>                        
+              </button>
+              <a class="navbar-brand" href="#">FinancialWorld</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="#">HOME</a></li>
+                    
+                   <!-- 1ère liste -->
+                  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">FIXED INCOME<span class="caret"></span></a> <!-- caret : to add a drop down button  -->
+                    <ul class="dropdown-menu">
+                      <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Bonds Pricing</strong></a>
+                          <ul class="dropdown-submenu">
+                            <li><a href="#">Vanilla</a></li>
+                            <li><a href="#">Floating</a></li>
+                            <li><a href="#">Inflation Linked</a></li>
+                            <li><a href="#">Convertible</a></li>
+                          </ul>
+                        </li>
+                      <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Duration & Sensitivity</strong></a>
+                          <ul class="dropdown-submenu">
+                              <li><a href="#">Duration</a></li>
+                              <li><a href="#">Credit Sensitivity</a></li>
+                          </ul>
+                      </li>
+                      <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Yield & Rates</strong></a>
+                          <ul class="dropdown-submenu">
+                              <li ><a href="#">OYTM</a></li>
+                              <li><a href="#">YTM</a></li>
+                              <li><a href="#">SWAPS</a></li>
+                          </ul>
+                      </li>
+                      <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Forward Pricing</strong></a>
+                          <ul class="dropdown-submenu">
+                              <li ><a href="#">Forward Rates</a></li>
+                              <li><a href="#">Forward Pricing</a></li>
+                          </ul>
+                      </li>
+                      <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Day Convention</strong></a>
+                          <ul class="dropdown-submenu">
+                              <li><a href="#">Business Day Convention</a></li>
+                              <li><a href="#">Day Count Convention</a></li>
+                          </ul>
+                      </li>
+                    </ul>  
+                  </li> <!-- FIN 1ère liste -->
+                
+                <!-- 2ème liste -->
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">STOCK MARKET<span class="caret"></span></a> <!-- caret : to add a drop down button  -->
+                  <ul class="dropdown-menu">
+                    <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Technical Analysis</strong></a>
+                        <ul class="dropdown-submenu">
+                          <li><a href="#">Moving Average</a></li>
+                          <li><a href="#">MACD</a></li>
+                          <li><a href="#">RSI</a></li>
+                          <li><a href="#">Stochastiques</a></li>
+                          <li><a href="#">Momentum</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>High Frequency Trading</strong></a>
+                        <ul class="dropdown-submenu">
+                           <li><a href="#">Real Time within Excel</a></li>
+                           <li><a href="#">Optimize your indicators</a></li>
+                        </ul>
+                    </li>
+                  </ul>  
+                </li> <!-- FIN 2ème liste -->
+                
+                <!-- 3ème liste -->
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">OPTIONS<span class="caret"></span></a> <!-- caret : to add a drop down button  -->
+                  <ul class="dropdown-menu">
+                    <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Pricing Methods</strong></a>
+                        <ul class="dropdown-submenu">
+                          <li><a href="#">Binominal</a></li>
+                          <li><a href="#">Black & Scholes</a></li>
+                          <li><a href="#">Monté Carlo</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Greeks</strong></a>
+                        <ul class="dropdown-submenu">
+                           <li><a href="#">Delta</a></li>
+                           <li><a href="#">Gamma</a></li>
+                           <li><a href="#">Vega</a></li>
+                           <li><a href="#">Teta</a></li>
+                           <li><a href="#">Rho</a></li>
+                        </ul>
+                    </li>
+                  </ul>  
+                </li> <!-- FIN 3ème liste -->
+                
+                <!-- 4ème liste -->
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">INSURANCE<span class="caret"></span></a> <!-- caret : to add a drop down button  -->
+                  <ul class="dropdown-menu">
+                    <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Amortized Cost Calculation</strong></a>
+                        <ul class="dropdown-submenu">
+                          <li><a href="#">Vanilla Bonds</a></li>
+                          <li><a href="#">Callable Bonds</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>SCR Calculation</strong></a>
+                        <ul class="dropdown-submenu">
+                           <li><a href="#">Bonds</a></li>
+                           <li><a href="#">Equity</a></li>
+                           <li><a href="#">Real Estate</a></li>
+                           <li><a href="#">Infrastructure Debt</a></li>
+                        </ul>
+                    </li>
+                  </ul>  
+                </li> <!-- FIN 4ème liste -->
+                
+                <!-- 5ème liste -->
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">EXCEL & VBA<span class="caret"></span></a> <!-- caret : to add a drop down button  -->
+                  <ul class="dropdown-menu">
+                    <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Function Combinations Power</strong></a>
+                        <ul class="dropdown-submenu">
+                          <li><a href="#">Index + Match</a></li>
+                          <li><a href="#">SumProduct + Indirect</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Build your own functions (UDF)</strong></a>
+                        <ul class="dropdown-submenu">
+                           <li><a href="#">Methods</a></li>
+                           <li><a href="#">Examples</a></li>
+                        </ul>
+                    </li>
+                  </ul>  
+                </li> <!-- FIN 5ème liste -->
+                
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="Login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              </ul>
+          
+          </ul>  <!-- <ul class="nav navbar-nav">-->
+          </div>
+          </div>
+        </nav>
+      </header>
+	</div>
+<body>
+
+	<h1>Day Count Convention</h1>
+    
+    
+    <p class="tip-box"><img id="ampoule-img" src="http://barretimmobilier.fr/wp-content/uploads/2017/11/ampoule-dessin-png-avec-une-jaune-de-l-mat-riau-et-1857c2ba05c7108-sur-idees-decoration-dameublemen-la-taille-278x340px.jpg"><span style="padding-left:1%">Change the parameter values in the </span><span style="color:rgb(0,112,192); font-weight:bold">blue cells</span><span> and observe the recalculation results.</span></p>
+    
+ <iframe width="600" height="650" frameborder="0" scrolling="no" src="https://onedrive.live.com/embed?resid=6B84965EF349B600%21124&authkey=%21AH7_RpQb5I0Dp5w&em=2&wdAllowInteractivity=False&AllowTyping=True&ActiveCell='ACT-ACT%20COMP'!C2&Item='ACT-ACT%20COMP'!A1%3AG30&wdDownloadButton=False&wdInConfigurator=True"></iframe>   
+   
+    
+</body>
+
+
+</html>
