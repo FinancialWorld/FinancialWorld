@@ -383,13 +383,17 @@
         body{
             position:relative;
             left:0%;
-            padding-left:10%; /* marge a gauche : auto fit */
+            padding-left:0%; /* marge a gauche */
             2width:auto; /* larmeur max de la page */
             2height: 100%;
             overflow:auto;
             background-position:center;
         }
-
+		
+        .body-div{
+        	padding-left:2%; /* marge a gauche */
+        }
+        
         h1{
             position:relative;
             left:0%;
@@ -654,8 +658,35 @@
         
         
         
+/***** FOOTER *****/        
+       footer{
+       		position:relative;
+            background:rgb(16, 16, 16);
+            height:60px;
+       } 
         
+        .footer-div{
+        	padding-top:20px;
+        }
         
+        .footer-list-ul{
+        }
+        
+        .footer-list-ul li{
+        	display:inline;
+            padding-right:3%;
+        }
+        
+       
+        
+        .footer-item-a{
+        	text-decoration:none;
+            color:white;
+        }
+       
+       	.footer-item-a:hover{
+        	color:rgb(51, 122, 183);
+        }
         
   		</style>
         
@@ -663,7 +694,7 @@
         
 	</head>
   
-	<!-- <div class="nav-header-div"> <!-- for stiking the navbar -->
+<div class="nav-header-div"> <!-- for stiking the navbar -->
       <header class="nav-header">
         <nav class="navbar navbar-inverse"> <!-- standard bar navigation-->
           <div class="container-fluid"> <!-- for a full width container, spanning the entire width of the viewport -->
@@ -718,7 +749,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Day Convention</strong></a>
                           <ul class="dropdown-submenu">
                               <li><a href="#">Business Day Convention</a></li>
-                              <li><a href="#">Day Count Convention</a></li>
+                              <li><a href="FinancialWorld/Day_Count_Convention.html" target="_blank">Day Count Convention</a></li>
                           </ul>
                       </li>
                     </ul>  
@@ -827,117 +858,116 @@
           </div>
         </nav>
       </header>
-<!--  </div> -->
+</div>
     
 <body>
+   <div class="body-div">
+      <div class="#">
 
-  	
- 
- 	<div class="#">
-    
-      <h1>Bond Price Calculator</h1>
-      <p>Fill-in the blank cells and get immediately the <b>price</b> of a <b>straight bond</b>.</p>
-    
-      <table class="bond-nav-table">
-          <tr class="bond-nav-tr">
-              <td id="price-nav-td" class="bond-nav-td">Price by given yield</td>
-              <td id="yield-nav-td" class="bond-nav-td"><a href="#" id="bond-nav-a">Yield by given price</a></td>
-          </tr>
-      </table>
-    </div>
-    
-    <div>
-        <form action="" >
-            <fieldset> <!-- The <fieldset> tag is used to group related elements in a form. it alose draws a box around the related elements.-->
-                <legend id="animation-text-color" class=""><span class="legend-span">Calculator</span></legend>
-                <table class="table-format">
-                    <tr>
-                        <td class="calculator-label-td">Annual coupon</td>
-                        <td class="calculator-values-td" data-descr="Restricted values range: [0.00 ; 20.00]">
-                          <input id="coupon_input" class="calculator-values-input" type="text" maxlength="6" min="0" max="20" value=5.000>
-                        </td>
+        <h1>Bond Price Calculator</h1>
+        <p>Fill-in the blank cells and get immediately the <b>price</b> of a <b>straight bond</b>.</p>
 
-                        <!-- title="Accepted values range: [-5 ; +20]" -->
-                    </tr>
-                    <tr>
-                        <td class="calculator-label-td">Market Yield</td>
-                        <td class="calculator-values-td" data-descr="Restricted values range: [-5.00 ; 20.00]">
-                          <input id="YTM_input" class="calculator-values-input" type="text" maxlength="6" min="-5" max="20" value=1.000> %
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="calculator-label-td">Pricing Date</td>
-                        <td class="calculator-values-td">
-                          <input id="pricing_date" class="calculator-dates-input" type="date" value=2018-11-10>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="calculator-label-td">Maturity Date</td>
-                        <td class="calculator-values-td">
-                          <input id="maturity_date" class="calculator-dates-input" type="date" min=2000-12-31 max=2200-12-31 value=2028-04-10>
-                        </td>
-                    </tr>
-                    <tr>      
-                        <td class="calculator-label-td">Redemption Value</td>
-                        <td class="calculator-values-td" data-descr="Restricted values range: [0 ; 1,000]">
-                          <input id="Redemption_Price" class="calculator-values-input" type="text" maxlength="7" min="0" max="1000" value=100.00>
-                        </td>
-                    </tr>
-                    <!-- INPUT RADIO :
-                            The name="#" inside the <input> statement allows the user to select only one radio button
-                            The default input radio selected is identified by "checked" (inside the <input> statement) --> 
-                    <tr>
-                        <td class="calculator-label-td">Frequency</td>
-                        <td class="calculator-radio-td"><input id="F1-input" type="radio" name="Frequency" checked><span class="Freq-radio-span">Annual</span></td>
-                    </tr>
-                    <tr>
-                        <td class="calculator-label-td"></td>
-                        <td class="calculator-radio-td"><input id="F2-input" type="radio" name="Frequency"><span class="Freq-radio-span">Semiannual</span></td>
-                    </tr>
-                    <tr>
-                        <td class="calculator-label-td"></td>
-                        <td class="calculator-radio-td"><input id="F3-input" type="radio" name="Frequency"><span class="Freq-radio-span">Quaterly</span></td>
-                    </tr>
-                    <tr><td></td></tr> <!-- empty row -->
-                    <tr>
-                        <td></td>
-                        <td><button type="button" onclick="BondPrice()">Calculate</button></td>
-                    </tr>
-                    <tr>
-                        <td class="calculator-label-td">Dirty Price</td>
-                        <td class="calculator-values-td"><div id="dirty_price" class="simulator-values-output"></div><span class="unite_mesure_position">%</span></td>
-                    </tr>
-                    <tr>
-                        <td class="calculator-label-td">Accrued Interest</td>
-                        <td class="calculator-values-td"><div id="accrued_interest" class="simulator-values-output"></div><span class="unite_mesure_position">%</span></td>
-                    </tr>
-                    <tr>
-                        <td class="calculator-label-td">Clean Price</td>
-                        <td class="calculator-values-td"><div id="clean_price" class="simulator-values-output"></div><span class="unite_mesure_position">%</span></td>
-                    </tr>
-                </table>          
-            </fieldset>	
-        </form>
-    </div><br>
+        <table class="bond-nav-table">
+            <tr class="bond-nav-tr">
+                <td id="price-nav-td" class="bond-nav-td">Price by given yield</td>
+                <td id="yield-nav-td" class="bond-nav-td"><a href="#" id="bond-nav-a">Yield by given price</a></td>
+            </tr>
+        </table>
+      </div>
 
-	<p class="note-box"><span><b>Note:</b></span> the bond calculator is suitable for <span style="text-decoration:underline">Vanilla</span> bond with fixed coupon payments and a repayment of the nominal value scheduled for maturity.</p>
-    <p class="download-box"><a href="#"><b>Download this calculator for free within Excel</b></a></p>
-    <h2>Definitions</h2>
-	<p>The <span><b>coupon rate</b></span>, also know as the <span><b>interest rate</b></span>, is the nominal payment paid periodically by the issuer relative to the bond's nominal value.</p>
-    <p>Payments occur at predetermined time <span><b>frequency</b></span>. It can be annual, semiannual, quarterly, monthly, weekly depending on the bond features. The frequency is constant over the life of the security.
-    <p>The <span><b>market yield</b></span> of a bond is the current yield that investors are willing to pay or sell to get or divest the security. The market yield of the bond (also said the Yield-to-Maturity) depends on the current market's conditions (interest rates, liquidity, ect) and the issuer's credit quality (knows also as credit spread).</p>
-    <p><span><b>The dirty price</b></span> also named the full coupon price is the price that a buyer must pay to afford it. This price includes the accrued interests since the last coupon payment. These interests are due to the seller.</p>
-    <p><span><b>The clean price</b></span> is the price without the accrued interests. This price make easier the comparison of bonds costliness</p>
-	<p>---</p>
-    <p>---</p>
-    <p>---</p>
-    <p>---</p>
-    <p>---</p>
-    <p>---</p>
-    <p>---</p>
+      <div>
+          <form action="" >
+              <fieldset> <!-- The <fieldset> tag is used to group related elements in a form. it alose draws a box around the related elements.-->
+                  <legend id="animation-text-color" class=""><span class="legend-span">Calculator</span></legend>
+                  <table class="table-format">
+                      <tr>
+                          <td class="calculator-label-td">Annual coupon</td>
+                          <td class="calculator-values-td" data-descr="Restricted values range: [0.00 ; 20.00]">
+                            <input id="coupon_input" class="calculator-values-input" type="text" maxlength="6" min="0" max="20" value=5.000>
+                          </td>
 
+                          <!-- title="Accepted values range: [-5 ; +20]" -->
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Market Yield</td>
+                          <td class="calculator-values-td" data-descr="Restricted values range: [-5.00 ; 20.00]">
+                            <input id="YTM_input" class="calculator-values-input" type="text" maxlength="6" min="-5" max="20" value=1.000> %
+                          </td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Pricing Date</td>
+                          <td class="calculator-values-td">
+                            <input id="pricing_date" class="calculator-dates-input" type="date" value=2018-11-10>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Maturity Date</td>
+                          <td class="calculator-values-td">
+                            <input id="maturity_date" class="calculator-dates-input" type="date" min=2000-12-31 max=2200-12-31 value=2028-04-10>
+                          </td>
+                      </tr>
+                      <tr>      
+                          <td class="calculator-label-td">Redemption Value</td>
+                          <td class="calculator-values-td" data-descr="Restricted values range: [0 ; 1,000]">
+                            <input id="Redemption_Price" class="calculator-values-input" type="text" maxlength="7" min="0" max="1000" value=100.00>
+                          </td>
+                      </tr>
+                      <!-- INPUT RADIO :
+                              The name="#" inside the <input> statement allows the user to select only one radio button
+                              The default input radio selected is identified by "checked" (inside the <input> statement) --> 
+                      <tr>
+                          <td class="calculator-label-td">Frequency</td>
+                          <td class="calculator-radio-td"><input id="F1-input" type="radio" name="Frequency" checked><span class="Freq-radio-span">Annual</span></td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td"></td>
+                          <td class="calculator-radio-td"><input id="F2-input" type="radio" name="Frequency"><span class="Freq-radio-span">Semiannual</span></td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td"></td>
+                          <td class="calculator-radio-td"><input id="F3-input" type="radio" name="Frequency"><span class="Freq-radio-span">Quaterly</span></td>
+                      </tr>
+                      <tr><td></td></tr> <!-- empty row -->
+                      <tr>
+                          <td></td>
+                          <td><button type="button" onclick="BondPrice()">Calculate</button></td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Dirty Price</td>
+                          <td class="calculator-values-td"><div id="dirty_price" class="simulator-values-output"></div><span class="unite_mesure_position">%</span></td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Accrued Interest</td>
+                          <td class="calculator-values-td"><div id="accrued_interest" class="simulator-values-output"></div><span class="unite_mesure_position">%</span></td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Clean Price</td>
+                          <td class="calculator-values-td"><div id="clean_price" class="simulator-values-output"></div><span class="unite_mesure_position">%</span></td>
+                      </tr>
+                  </table>          
+              </fieldset>	
+          </form>
+      </div><br>
 
-
-    
+      <p class="note-box"><span style="color:rgb(255,102,0); font-size:16px"><b>!</b></span> The bond calculator is suitable for <span style="text-decoration:underline">Vanilla</span> bond with fixed coupon payments and a repayment of the nominal value scheduled for maturity.</p>
+      <p class="download-box"><a href="#"><b>Download this calculator for free within Excel</b></a></p>
+      <h2>Definitions</h2>
+      <p>The <span><b>coupon rate</b></span>, also know as the <span><b>interest rate</b></span>, is the nominal payment paid periodically by the issuer relative to the bond's nominal value.</p>
+      <p>Payments occur at predetermined time <span><b>frequency</b></span>. It can be annual, semiannual, quarterly, monthly, weekly depending on the bond features. The frequency is constant over the life of the security.
+      <p>The <span><b>market yield</b></span> of a bond is the current yield that investors are willing to pay or sell to get or divest the security. The market yield of the bond (also said the Yield-to-Maturity) depends on the current market's conditions (interest rates, liquidity, ect) and the issuer's credit quality (knows also as credit spread).</p>
+      <p><span><b>The dirty price</b></span> also named the full coupon price is the price that a buyer must pay to afford it. This price includes the accrued interests since the last coupon payment. These interests are due to the seller.</p>
+      <p><span><b>The clean price</b></span> is the price without the accrued interests. This price make easier the comparison of bonds costliness</p>
+	</div>    
 </body>
+
+<footer>
+	<div class="footer-div">
+      <ul class="footer-list-ul">
+        <li><a class="footer-item-a" href="#">About me</a></li>
+        <li><a class="footer-item-a" href="#">Contact me</a></li>
+        <li><a class="footer-item-a" href="#">Legal</a></li>
+      </ul>
+	</div> 
+
+</footer>
 </html> 
