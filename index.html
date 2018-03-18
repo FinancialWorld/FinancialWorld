@@ -3,16 +3,378 @@
 
 <head>
   	<title>Bonds</title>
-  	<meta http-equiv="Content-Type" content="text/html"/>
-  	<meta charset="utf-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1"/> <!-- To ensure proper rendering and touch zooming -->
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> <!-- Obligatoire pour importer la mise en forme du menu  -->
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">	</script> <!-- For the drop down menu  -->
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> <!-- For the drop down menu  -->
-  	<meta name="description" content=""/>
+  <meta http-equiv="Content-Type" content="text/html"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/> <!-- To ensure proper rendering and touch zooming -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> <!-- Obligatoire pour importer la mise en forme du menu  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!-- For the drop down menu  -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> <!-- For the drop down menu  -->
+  <meta name="description" content="Bond pricing and SCR Calculation: methods, simulator, excel implementation, free download. Vanilla, Floating, Inflation linked, Convertible bonds. Get real time and historical stock prices from web with excel for free. Build your own technical and dynamic analysis model within excel and beat the market"/>
+	
+  	<script>
+  		function BondPrice() {
+        	var
+            Coupon = document.getElementById("coupon_input").value * 1; //Mettre * 1 pour que ce soit reconnu en nombre
+            
+            
+            if (document.getElementById('F1-input').checked) {
+  				Frequency = 1;
+			}
+            else if (document.getElementById('F2-input').checked) {
+  				Frequency = 2;
+			}
+            else if (document.getElementById('F3-input').checked) {
+  				Frequency = 4;
+			}
+            Periodic_Coupon = Coupon / Frequency
+            
+            Redemption_Price = document.getElementById("Redemption_Price").value * 1; // * 1
+          	YTM = document.getElementById("YTM_input").value / 100;
+            Pricing_Date = new Date(document.getElementById("pricing_date").value); 
+            //Using new Date(date string), creates a new date object
+            Maturity_Date = new Date(document.getElementById("maturity_date").value);
+            //Initialization: 
+            Start_Date = Pricing_Date;
+            LastCouponDate = Last_Coupon_Date(Start_Date, Maturity_Date, Frequency);
+            Next_CPN_Date = Next_CPN_Date = Next_Coupon_Date(Start_Date, Maturity_Date, Frequency); //CALL de la fonction Next_Coupon_Date;
+            T = 0; Discounted_CF = 0; Discounted_CF_Sum = 0; CF=0; Accrued_Interest=0;
+            //Iteration (tant que la date de prochain détachement est inférieure à la date de terme, l'itération continue:
+            for (;;) {
+   				Next_CPN_Date = Next_Coupon_Date(Start_Date, Maturity_Date, Frequency); //CALL a placer à la fin et non juste après While car sinon l'itération prend un période en trop!!!
+            	if (+Next_CPN_Date == +Maturity_Date) { //Pour tester l'égalité des dates: mettre des + devant les variables dates ; et s'assurer que les Hours soient les meme pour les 2 dates (.getHours())
+                	Periodic_Coupon += Redemption_Price;
+                }
+                
+                if (+Next_CPN_Date > +Maturity_Date) {
+                	break;
+                }
 
-  <style>
-  
+                
+                T = (Next_CPN_Date - Pricing_Date)/1000/60/60/24/365; //JS donne l'intervalle de temps en milliseconde
+                Discounted_CF = Periodic_Coupon / Math.pow(1 + YTM , T);
+                Discounted_CF_Sum += Discounted_CF;
+            	Start_Date = Next_CPN_Date; //Start_Date utilisée comme date de départ dans la fonction Next_Coupon_Date
+                TTT = Periodic_Coupon;
+                Accrued_Interest = Coupon * (Pricing_Date - LastCouponDate)/1000/60/60/24/365;
+            	Clean_Price = Discounted_CF_Sum - Accrued_Interest;
+                
+              }
+                document.getElementById("dirty_price").innerHTML = Discounted_CF_Sum.toFixed(3); //.toFixed(4) >>> display with 3 decimals
+          		document.getElementById("accrued_interest").innerHTML = Accrued_Interest.toFixed(3);
+                document.getElementById("clean_price").innerHTML = Clean_Price.toFixed(3);
+          }  
+          
+	</script>
+    <script>
+    // the Next_Coupon_Date function finds the next coupon date from a specify date
+  		function Next_Coupon_Date(Start_Date, Maturity_Date, Frequency) {
+                var
+                Day_Start = Start_Date.getDate();
+                Month_Start = Start_Date.getMonth();
+                Year_Start = Start_Date.getFullYear();
+                Day_Maturity = Maturity_Date.getDate();
+                Month_Maturity = Maturity_Date.getMonth();
+               
+                Day_NCD=Maturity_Date.getDate();
+                
+                if (Frequency == 1) { // == : OBLIGATOIRE!!
+                		var NCD_1 = new Date(Year_Start, Month_Maturity, Day_NCD, Maturity_Date.getHours(), 0, 0); // Date(Year, Month, Day, Hours, Minutes, Secondes) >>> obligatoire car dans les inputs du formulaire, les dates de Pricing et de Maturité saisies par l'utilisateur ont pour valeur 01:00:00 concernant l'heure (valeur par défaut)
+                        var NCD_2 = new Date(Year_Start + 1, Month_Maturity, Day_NCD, Maturity_Date.getHours(), 0, 0);
+    					if (NCD_1 > Start_Date) {
+                            	var NextCouponDate = NCD_1;
+                            }
+                        else {
+                        		var NextCouponDate = NCD_2;
+                        } //else
+               	}  //if
+                
+                else if (Frequency == 2) {
+                		if (Month_Maturity - 6 > 0) {
+                        	// Calcul des 3 dates de détachement (2 sur l'année en cours + 1 l'année suivante) :
+                        	var NCD_1 = new Date(Year_Start , Month_Maturity - 6, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_2 = new Date(Year_Start , Month_Maturity, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_3 = new Date(Year_Start + 1, Month_Maturity - 6, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            
+                            var Date_Array = [NCD_1, NCD_2, NCD_3];
+                            var i = 0;
+                            var NextCouponDate = NCD_1;
+                           
+                           	for (i = 0; ;i++){
+                            	NextCouponDate = Date_Array[i];
+                                    if (+NextCouponDate > +Start_Date) {
+                                    	break;
+                                    }
+                            } // for 
+                        } //if
+                        
+                        else if (Month_Maturity - 6 <= 0) {
+                        	var NCD_1 = new Date(Year_Start, Month_Maturity, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_2 = new Date(Year_Start, Month_Maturity + 6, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_3 = new Date(Year_Start + 1, Month_Maturity, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            
+                            var Date_Array = [NCD_1, NCD_2, NCD_3];
+                            var i = 0;
+                            var NextCouponDate = NCD_1;
+                           
+                           	for (i = 0; ;i++){
+                            	NextCouponDate = Date_Array[i];
+                                    if (+NextCouponDate > +Start_Date) {
+                                    	break;
+                                    }
+                            } //for
+                 		} //else if
+                 } // else if (Freq = 2)
+                 
+                 else if (Frequency == 4) {
+                		if (+Month_Maturity - 3 < 0) {
+                        	var NCD_1 = new Date(Year_Start, Month_Maturity, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_2 = new Date(Year_Start, Month_Maturity + 3, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_3 = new Date(Year_Start, Month_Maturity + 6, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_4 = new Date(Year_Start, Month_Maturity + 9, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_5 = new Date(Year_Start + 1, Month_Maturity, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            
+                            var Date_Array = [NCD_1, NCD_2, NCD_3, NCD_4, NCD_5];
+                            // Recherche de la bonne date par itération :
+                            var i = 0;
+                            var NextCouponDate = NCD_1;
+                           
+                           	for (i = 0; ;i++){
+                            	NextCouponDate = Date_Array[i];
+                                    if (+NextCouponDate > +Start_Date) {
+                                    	break;
+                                    }
+                            } //for
+                            
+                       	} //if
+                        
+                        else if (+Month_Maturity <= 6) {
+                        	var NCD_1 = new Date(Year_Start, Month_Maturity - 3, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_2 = new Date(Year_Start, Month_Maturity, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_3 = new Date(Year_Start, Month_Maturity + 3, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_4 = new Date(Year_Start, Month_Maturity + 6, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_5 = new Date(Year_Start + 1, Month_Maturity - 3, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            
+                            var Date_Array = [NCD_1, NCD_2, NCD_3, NCD_4, NCD_5];
+                            var i = 0;
+                            var NextCouponDate = NCD_1;
+                            for (i = 0; ;i++){
+                            	NextCouponDate = Date_Array[i];
+                                    if (+NextCouponDate > +Start_Date) {
+                                    	break;
+                                    }
+                            } //for
+                       	} //else if
+                        
+                        else if (Month_Maturity + 3 <= 9) {
+                        	var NCD_1 = new Date(Year_Start, Month_Maturity - 6, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_2 = new Date(Year_Start, Month_Maturity - 3, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_3 = new Date(Year_Start, Month_Maturity, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_4 = new Date(Year_Start, Month_Maturity + 3, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_5 = new Date(Year_Start + 1, Month_Maturity - 6, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            
+                            var Date_Array = [NCD_1, NCD_2, NCD_3, NCD_4, NCD_5];
+                            var i = 0;
+                            var NextCouponDate = NCD_1;
+                            for (i = 0; ;i++){
+                            	NextCouponDate = Date_Array[i];
+                                    if (+NextCouponDate > +Start_Date) {
+                                    	break;
+                                    }
+                            } //for
+                        } //else if
+                        
+                        else {
+                        	var NCD_1 = new Date(Year_Start, Month_Maturity - 9, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_2 = new Date(Year_Start, Month_Maturity - 6, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_3 = new Date(Year_Start, Month_Maturity - 3, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_4 = new Date(Year_Start, Month_Maturity, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            var NCD_5 = new Date(Year_Start + 1, Month_Maturity - 9, Day_NCD, Maturity_Date.getHours(), 0, 0);
+                            
+                            var Date_Array = [NCD_1, NCD_2, NCD_3, NCD_4, NCD_5];
+                            var i = 0;
+                            var NextCouponDate = NCD_1;
+                            for (i = 0; ;i++){
+                            	NextCouponDate = Date_Array[i];
+                                    if (+NextCouponDate > +Start_Date) {
+                                    	break;
+                                    }
+                            } //for
+                       	} //else
+                          
+                 } // else if (Freq = 4)
+               
+                return NextCouponDate;
+        } 
+          
+   
+    </script>
+
+    <script>
+        // the Last_Coupon_Date function finds the next coupon date from a specify date
+            function Last_Coupon_Date(Start_Date, Maturity_Date, Frequency) {
+                    var
+                    Day_Start = Start_Date.getDate();
+                    Month_Start = Start_Date.getMonth();
+                    Year_Start = Start_Date.getFullYear();
+                    Day_Maturity = Maturity_Date.getDate();
+                    Month_Maturity = Maturity_Date.getMonth();
+
+                    Day_LCD=Maturity_Date.getDate();
+
+                    if (Frequency == 1) { // == : OBLIGATOIRE!!
+                            var LCD_1 = new Date(Year_Start, Month_Maturity, Day_LCD, 1, 0, 0); // Date(Year, Month, Day, Hours, Minutes, Secondes) >>> obligatoire car dans les inputs du formulaire, les dates de Pricing et de Maturité saisies par l'utilisateur ont pour valeur 01:00:00 concernant l'heure (valeur par défaut)
+                            var LCD_2 = new Date(Year_Start - 1, Month_Maturity, Day_LCD, 1, 0, 0);
+                            if (+LCD_1 <= +Start_Date) {
+                                    var LastCouponDate = LCD_1;
+                                }
+                            else {
+                                    var LastCouponDate = LCD_2;
+                            }
+                    } // if (freq =1)
+
+                    else if (Frequency == 2) {
+                            if (Month_Maturity - 6 > 0) {
+                                // Calcul des 3 dates de détachement (2 sur l'année en cours + 1 l'année suivante) :								
+                                var LCD_1 = new Date(Year_Start , Month_Maturity, Day_LCD, 1, 0, 0);
+                                var LCD_2 = new Date(Year_Start , Month_Maturity - 6, Day_LCD, 1, 0, 0);
+                                var LCD_3 = new Date(Year_Start - 1, Month_Maturity, Day_LCD, 1, 0, 0);
+                                
+                                var Date_Array = [LCD_1, LCD_2, LCD_3];
+                                // Recherche de la bonne date par itération :
+                                var i = 0;
+                                var LastCouponDate = LCD_1;
+                                
+                                for (i = 0; ;i++){
+                                    LastCouponDate = Date_Array[i];
+                                        if (+LastCouponDate <= +Start_Date) {
+                                            break;
+                                        }
+                                }  
+                            }
+                            
+                            else {
+                                var LCD_1 = new Date(Year_Start, Month_Maturity + 6, Day_LCD, 1, 0, 0);
+                                var LCD_2 = new Date(Year_Start, Month_Maturity, Day_LCD, 1, 0, 0);
+                                var LCD_3 = new Date(Year_Start - 1, Month_Maturity + 6, Day_LCD, 1, 0, 0);
+                                
+                                var Date_Array = [LCD_1, LCD_2, LCD_3];
+                                // Recherche de la bonne date par itération :
+                                var i = 0;
+                                var LastCouponDate = LCD_1;
+                                
+                                for (i = 0; ;i++){
+                                    LastCouponDate = Date_Array[i];
+                                        if (+LastCouponDate <= +Start_Date) {
+                                            break;
+                                        }
+                                }
+                            }
+                     } // if (freq = 2)
+
+                     else if (Frequency == 4) {
+                            if (Month_Maturity - 3 < 0) {
+                                var LCD_5 = new Date(Year_Start - 1, Month_Maturity + 9, Day_LCD, 1, 0, 0);
+                                var LCD_4 = new Date(Year_Start, Month_Maturity, Day_LCD, 1, 0, 0);
+                                var LCD_3 = new Date(Year_Start, Month_Maturity + 3, Day_LCD, 1, 0, 0);
+                                var LCD_2 = new Date(Year_Start, Month_Maturity + 6, Day_LCD, 1, 0, 0);
+                                var LCD_1 = new Date(Year_Start, Month_Maturity + 9, Day_LCD, 1, 0, 0);
+
+                                var Date_Array = [LCD_1, LCD_2, LCD_3, LCD_4, LCD_5];
+                                // Recherche de la bonne date par itération :
+                                var i = 0;
+                                var LastCouponDate = LCD_1;
+
+                                for (i = 0; ;i++){
+                                    LastCouponDate = Date_Array[i];
+                                        if (+LastCouponDate <= +Start_Date) {
+                                            break;
+                                        }
+                                }
+
+                            }
+                            else if (Month_Maturity <= 6) {
+                                var LCD_5 = new Date(Year_Start - 1, Month_Maturity + 6, Day_LCD, 1, 0, 0);
+                                var LCD_4 = new Date(Year_Start, Month_Maturity - 3, Day_LCD, 1, 0, 0);
+                                var LCD_3 = new Date(Year_Start, Month_Maturity, Day_LCD, 1, 0, 0);
+                                var LCD_2 = new Date(Year_Start, Month_Maturity + 3, Day_LCD, 1, 0, 0);
+                                var LCD_1 = new Date(Year_Start, Month_Maturity + 6, Day_LCD, 1, 0, 0);
+
+                                var Date_Array = [LCD_1, LCD_2, LCD_3, LCD_4, LCD_5];
+                                var i = 0;
+                                var LastCouponDate = LCD_1;
+                                for (i = 0; ;i++){
+                                    LastCouponDate = Date_Array[i];
+                                        if (+LastCouponDate <= +Start_Date) {
+                                            break;
+                                        }
+                                }
+                            }
+                            else if (Month_Maturity + 3 <= 9) {
+                                var LCD_5 = new Date(Year_Start - 1, Month_Maturity + 3, Day_LCD, 1, 0, 0);
+                                var LCD_4 = new Date(Year_Start, Month_Maturity - 6, Day_LCD, 1, 0, 0);
+                                var LCD_3 = new Date(Year_Start, Month_Maturity - 3, Day_LCD, 1, 0, 0);
+                                var LCD_2 = new Date(Year_Start, Month_Maturity, Day_LCD, 1, 0, 0);
+                                var LCD_1 = new Date(Year_Start, Month_Maturity + 3, Day_LCD, 1, 0, 0);
+
+                                var Date_Array = [LCD_1, LCD_2, LCD_3, LCD_4, LCD_5];
+                                var i = 0;
+                                var LastCouponDate = LCD_1;
+                                for (i = 0; ;i++){
+                                    LastCouponDate = Date_Array[i];
+                                        if (+LastCouponDate <= +Start_Date) {
+                                            break;
+                                        }
+                                }
+                            }
+                            else {
+                                var LCD_5 = new Date(Year_Start - 1, Month_Maturity, Day_LCD, 1, 0, 0);
+                                var LCD_4 = new Date(Year_Start, Month_Maturity - 9, Day_LCD, 1, 0, 0);
+                                var LCD_3 = new Date(Year_Start, Month_Maturity - 6, Day_LCD, 1, 0, 0);
+                                var LCD_2 = new Date(Year_Start, Month_Maturity - 3, Day_LCD, 1, 0, 0);
+                                var LCD_1 = new Date(Year_Start, Month_Maturity, Day_LCD, 1, 0, 0);
+
+                                var Date_Array = [LCD_1, LCD_2, LCD_3, LCD_4, LCD_5];
+                                var i = 0;
+                                var LastCouponDate = LCD_1;
+                                for (i = 0; ;i++){
+                                    LastCouponDate = Date_Array[i];
+                                        if (+LastCouponDate <= +Start_Date) {
+                                            break;
+                                        }
+                                }
+                            }
+                     } // if (freq = 4)
+
+                    return LastCouponDate;
+            } 
+          
+   
+    </script>
+    
+   <script>
+    	var myVar = setInterval(Color_Text_Change, 1000);
+    	var color = ["black","rgb(0, 0, 255)"]
+        var color_i;
+        
+        //var current_date= new Date()
+        
+        function Color_Text_Change() {
+        	var doc = document.getElementById("animation-text-color");
+            current_date = new Date()
+            if (current_date.getSeconds() % 2 == 0) {
+            	color_i = color[0]; // second pair : red
+            }
+            else {
+            	color_i = color[1]; // second pair : blue
+            }
+         	doc.style.color = color_i;
+        }
+    
+    </script>
+
+    
+    <style>
+
 /***** GENERAL *****/
         header{
         	position:relative; 
@@ -21,13 +383,17 @@
         body{
             position:relative;
             left:0%;
-            padding-left:10%; /* marge a gauche : auto fit */
+            padding-left:0%; /* marge a gauche */
             2width:auto; /* larmeur max de la page */
             2height: 100%;
             overflow:auto;
             background-position:center;
         }
-
+		
+        .body-div{
+        	padding-left:2%; /* marge a gauche */
+        }
+        
         h1{
             position:relative;
             left:0%;
@@ -49,51 +415,285 @@
 
 
 
-/***** IFRAME *****/
-		iframe{
-            position:relative;
-            left:0%;
-            z-index:0;/* >>>>EXCEL: mettre -1 pour empecher l'acces au embed sheet excel >>> bien pour éviter le téléchargement*/
-        }
-/***** IFRAME (FIN) *****/
-
-
-
 /***** NAVIGATION BAR HEADER *****/
         .nav-header-div{
-            position:sticky;
-            left:0px;
-            top:0px;
-            z-index:1;
+                    position:sticky;
+                    left:0px;
+                    top:0px;
+                    z-index:1;
                 }
-/***** NAVIGATION BAR HEADER (FIN) *****/   
-      
-      
-      
+/***** NAVIGATION BAR HEADER (FIN) *****/
+
+
+        
+/***** CALCULATOR *****/        
+        form {
+        	position:relative;
+            left: 10%;
+            max-width:400px;
+            padding-top:1%;
+        }
+
+        fieldset {
+        	position:relative;
+        	border-top:solid 1px black;
+            background:rgb(242, 242, 242); 
+        }
+
+        legend {
+        	position:relative;
+            font-size:26px;
+            color:rgb(60, 60, 60);
+        }
+        
+        .legend-span{
+        	background:rgb(242, 242, 242);
+            padding:1px 10px 1px 5px;
+            border-radius:0px 8px 0px 0px;
+        }
+
+        .table-format {
+
+        }
+        
+
+        .calculator-label-td {
+            position:relative;
+            left: 1%;
+            font-weight:bold;
+            text-align:right;
+
+        }
+
+        .calculator-values-td {
+        	position: relative;
+            left: 2%;
+            padding:5px 0px 5px 0px
+        }
+		
+        .calculator-values-input {
+            position:relative;
+            left: 2%;
+            width:60px;
+            text-align:right;
+			padding-right:5px;
+            font-family: Source Sans Pro,sans-serif;
+        }
+
+        .calculator-dates-input {
+        	position:relative;
+            left: 2%;
+            width:115px;
+            text-align:center;
+        }
+        
+    	.simulator-values-output{
+        	position:absolute; /* position absolue par rapport à td*/ 
+            left: 2%;
+            text-align:right;
+            vertical-align: middle;
+			padding:0px 5px 2px 0px;
+            border:1px solid rgb(100, 100, 100);
+            font-size:15px;
+            background:rgb(230, 245, 255);
+            text-align: right;
+            width:70px;
+            height:23px;
+            font-family: Source Sans Pro,sans-serif;
+        }
+        
+        .calculator-radio-td{
+        	position:relative;
+            left:5%; /* alignement des boutons radio*/
+        }
+        
+        #F1-input, #F1-input, #F3-input{
+        	
+            
+        }
+        
+        .Freq-radio-span{
+        	position:relative; /* alignement des labels Annual Seminannual Quaterly*/
+            left:5%;
+        }
+        
+        
+        
+        input[type=text]:focus { /* Select and style an input field when it gets focus */
+    		background-color:rgb(255, 255, 230);
+            font-weight:bold;
+            color:blue;
+		}
+        
+        input[type=date]:focus { /* Select and style an input field when it gets focus */
+            background-color:rgb(255, 255, 230);
+            font-weight:bold;
+            color:blue;
+		}
+        
+        
+        button {
+            position: relative;
+            left: 0%; /* button located 15% on the left from the normal position*/
+            font-weight:bold;
+            color:white;
+            margin:10px 0px 10px 0px;
+            text-align:center;
+            height:28px;
+           
+            background: rgb(166, 36, 54);
+            border: none;
+            font-size: 16px;
+            font-family: Source Sans Pro,sans-serif;
+        }
+        
+        button:hover {
+        	background: rgb(0, 92, 230);
+        }
+
+        
+        #dirty_price, #clean_price, #accrued_interest {
+        }
+
+		input[type=text]:hover {
+          	cursor: help; /* point d'interrogation lorsque l'utilisateur surole l'input box*/
+        }
+
+        
+        td[data-descr] {
+          	position: relative; /* définit la position des td*/
+        }
+
+        td[data-descr]:hover::after { /* after : pour faire apparaitre après l'input box (sinon remplacement)*/
+        	content: attr(data-descr);
+            position: absolute; /* définit la position absolue (fixe) par rapport à la position normale difinie ci-dessus (par la position relative)*/
+            top: 80%; /* position alignée sur le bord inférieur de l'input box */
+            min-width:0px;
+            width:100%;
+            border: 1px #aaaaaa solid;
+            border-radius: 10px; /* arrondi des angles de l'info bulle*/ 
+            background-color: #555;
+            padding: 1px 2px 1px 2px;
+            color: white;
+            font-size: 14px;
+            text-align:center;
+            z-index: 1; /* to place the pop-up in front of elements/text ; z-index works only for :after element */
+        }
+        
+        .unite_mesure_position{
+        	position:relative;
+            left:68%;
+        }
+/***** CALCULATOR (FIN) *****/              
+   
+   
+   
 /***** BOXES *****/       
-        .tip-box{
+        .note-box{
         	position: relative;
             left:0%; /* Marge par rapport à body*/ 
-            max-width:90%; /* 10% de marge à doite (paragraphe) + 2% (a cause marge à gauche)*/
-            background:rgb(252, 252, 252);
+            max-width:90%; /* 10% de marge à doite (paragraphe) + 2% (a cause marge à gauhe)*/
+            background:rgb(255, 255, 204);
             padding: 5px 5px 5px 20px;
-            border-left: 6px solid rgb(220, 220, 220);
+            border-left: 6px solid rgb(255, 235, 59);
             z-index:-1;
         }
         
-        #ampoule-img{
-      		width:20px;
-            height:20px;
-      }
-      
-      
-/***** BOXES (FIN) *****/   
+        .download-box{
+        	position: relative;
+            left:0%; /* Marge par rapport à body*/ 
+            max-width:90%; /* pour ne pas que les boxes dépassent de body étant donné la marge à gauche de 2% en relatif */
+            background:rgb(230, 245, 255);
+            padding: 5px 5px 5px 20px;
+            border-left: 6px solid rgb(77, 184, 255);
+            z-index:-1;
+        }
+/***** BOXES (FIN) *****/     
+ 
+ 
         
-  </style>
-
-</head>
-
-
+/***** LOCAL NAV BAR TABLE *****/
+        .bond-nav-table{
+        	position:relative;
+            left:10%; /* Pour être aligné avec la form */
+       		border-collapse:collapse;
+            border-bottom:solid 2px rgb(153, 214, 255);
+        }
+        
+        .bond-nav-tr{
+        	
+        }
+        
+        .bond-nav-td{
+        	padding:0px 10px 0px 10px;
+            font-size:20px;
+            text-align:center;
+            color:black;
+        }
+        
+        #price-nav-td{
+        	background:rgb(153, 214, 255);
+            border-radius: 8px 8px 0px 0px;
+        }
+        
+        #yield-nav-td{
+       		background:rgb(230, 245, 255);
+        	border-radius: 8px 8px 0px 0px;
+        }
+        
+        #yield-nav-td:hover{
+       		background:rgb(220, 235, 255);
+        }
+        
+        #bond-nav-a {
+        	text-decoration:none;
+            color:black;
+        }
+        
+        #bond-nav-a:hover{
+        	color:blue;
+            text-decoration: underline; 
+        }
+/***** LOCAL NAV BAR TABLE (FIN) *****/
+        
+        
+        
+/***** FOOTER *****/        
+       footer{
+       		position:relative;
+            background:rgb(16, 16, 16);
+            height:60px;
+       } 
+        
+        .footer-div{
+        	padding-top:20px;
+        }
+        
+        .footer-list-ul{
+        }
+        
+        .footer-list-ul li{
+        	display:inline;
+            padding-right:3%;
+        }
+        
+       
+        
+        .footer-item-a{
+        	text-decoration:none;
+            color:white;
+        }
+       
+       	.footer-item-a:hover{
+        	color:rgb(51, 122, 183);
+        }
+        
+  		</style>
+        
+        
+        
+	</head>
+  
 <div class="nav-header-div"> <!-- for stiking the navbar -->
       <header class="nav-header">
         <nav class="navbar navbar-inverse"> <!-- standard bar navigation-->
@@ -108,7 +708,7 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#">HOME</a></li>
+                <li class="active"><a href="index.html">HOME</a></li>
                     
                    <!-- 1ère liste -->
                   <li class="dropdown">
@@ -149,7 +749,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Day Convention</strong></a>
                           <ul class="dropdown-submenu">
                               <li><a href="#">Business Day Convention</a></li>
-                              <li><a href="Day_Count_Convention.html">Day Count Convention</a></li>
+                              <li><a href="https://github.com/FinancialWorld/Day_Count_Convention.html" target="_blank">Day Count Convention</a></li>
                           </ul>
                       </li>
                     </ul>  
@@ -258,18 +858,116 @@
           </div>
         </nav>
       </header>
-	</div>
+</div>
+    
 <body>
+   <div class="body-div">
+      <div class="#">
 
-	<h1>Day Count Convention</h1>
-    
-    
-    <p class="tip-box"><img id="ampoule-img" src="http://barretimmobilier.fr/wp-content/uploads/2017/11/ampoule-dessin-png-avec-une-jaune-de-l-mat-riau-et-1857c2ba05c7108-sur-idees-decoration-dameublemen-la-taille-278x340px.jpg"><span style="padding-left:1%">Change the parameter values in the </span><span style="color:rgb(0,112,192); font-weight:bold">blue cells</span><span> and observe the recalculation results.</span></p>
-    
- <iframe width="600" height="670" frameborder="0" scrolling="no" src="https://onedrive.live.com/embed?resid=6B84965EF349B600%21124&authkey=%21AH7_RpQb5I0Dp5w&em=2&wdAllowInteractivity=False&AllowTyping=True&ActiveCell='ACT-ACT%20COMP'!C2&Item='ACT-ACT%20COMP'!A1%3AG30&wdDownloadButton=False&wdInConfigurator=True"></iframe>   
-   
-    
+        <h1>Bond Price Calculator</h1>
+        <p>Fill-in the blank cells and get immediately the <b>price</b> of a <b>straight bond</b>.</p>
+
+        <table class="bond-nav-table">
+            <tr class="bond-nav-tr">
+                <td id="price-nav-td" class="bond-nav-td">Price by given yield</td>
+                <td id="yield-nav-td" class="bond-nav-td"><a href="#" id="bond-nav-a">Yield by given price</a></td>
+            </tr>
+        </table>
+      </div>
+
+      <div>
+          <form action="" >
+              <fieldset> <!-- The <fieldset> tag is used to group related elements in a form. it alose draws a box around the related elements.-->
+                  <legend id="animation-text-color" class=""><span class="legend-span">Calculator</span></legend>
+                  <table class="table-format">
+                      <tr>
+                          <td class="calculator-label-td">Annual coupon</td>
+                          <td class="calculator-values-td" data-descr="Restricted values range: [0.00 ; 20.00]">
+                            <input id="coupon_input" class="calculator-values-input" type="text" maxlength="6" min="0" max="20" value=5.000>
+                          </td>
+
+                          <!-- title="Accepted values range: [-5 ; +20]" -->
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Market Yield</td>
+                          <td class="calculator-values-td" data-descr="Restricted values range: [-5.00 ; 20.00]">
+                            <input id="YTM_input" class="calculator-values-input" type="text" maxlength="6" min="-5" max="20" value=1.000> %
+                          </td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Pricing Date</td>
+                          <td class="calculator-values-td">
+                            <input id="pricing_date" class="calculator-dates-input" type="date" value=2018-11-10>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Maturity Date</td>
+                          <td class="calculator-values-td">
+                            <input id="maturity_date" class="calculator-dates-input" type="date" min=2000-12-31 max=2200-12-31 value=2028-04-10>
+                          </td>
+                      </tr>
+                      <tr>      
+                          <td class="calculator-label-td">Redemption Value</td>
+                          <td class="calculator-values-td" data-descr="Restricted values range: [0 ; 1,000]">
+                            <input id="Redemption_Price" class="calculator-values-input" type="text" maxlength="7" min="0" max="1000" value=100.00>
+                          </td>
+                      </tr>
+                      <!-- INPUT RADIO :
+                              The name="#" inside the <input> statement allows the user to select only one radio button
+                              The default input radio selected is identified by "checked" (inside the <input> statement) --> 
+                      <tr>
+                          <td class="calculator-label-td">Frequency</td>
+                          <td class="calculator-radio-td"><input id="F1-input" type="radio" name="Frequency" checked><span class="Freq-radio-span">Annual</span></td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td"></td>
+                          <td class="calculator-radio-td"><input id="F2-input" type="radio" name="Frequency"><span class="Freq-radio-span">Semiannual</span></td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td"></td>
+                          <td class="calculator-radio-td"><input id="F3-input" type="radio" name="Frequency"><span class="Freq-radio-span">Quaterly</span></td>
+                      </tr>
+                      <tr><td></td></tr> <!-- empty row -->
+                      <tr>
+                          <td></td>
+                          <td><button type="button" onclick="BondPrice()">Calculate</button></td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Dirty Price</td>
+                          <td class="calculator-values-td"><div id="dirty_price" class="simulator-values-output"></div><span class="unite_mesure_position">%</span></td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Accrued Interest</td>
+                          <td class="calculator-values-td"><div id="accrued_interest" class="simulator-values-output"></div><span class="unite_mesure_position">%</span></td>
+                      </tr>
+                      <tr>
+                          <td class="calculator-label-td">Clean Price</td>
+                          <td class="calculator-values-td"><div id="clean_price" class="simulator-values-output"></div><span class="unite_mesure_position">%</span></td>
+                      </tr>
+                  </table>          
+              </fieldset>	
+          </form>
+      </div><br>
+
+      <p class="note-box"><span style="color:rgb(255,102,0); font-size:16px"><b>!</b></span> The bond calculator is suitable for <span style="text-decoration:underline">Vanilla</span> bond with fixed coupon payments and a repayment of the nominal value scheduled for maturity.</p>
+      <p class="download-box"><a href="#"><b>Download this calculator for free within Excel</b></a></p>
+      <h2>Definitions</h2>
+      <p>The <span><b>coupon rate</b></span>, also know as the <span><b>interest rate</b></span>, is the nominal payment paid periodically by the issuer relative to the bond's nominal value.</p>
+      <p>Payments occur at predetermined time <span><b>frequency</b></span>. It can be annual, semiannual, quarterly, monthly, weekly depending on the bond features. The frequency is constant over the life of the security.
+      <p>The <span><b>market yield</b></span> of a bond is the current yield that investors are willing to pay or sell to get or divest the security. The market yield of the bond (also said the Yield-to-Maturity) depends on the current market's conditions (interest rates, liquidity, ect) and the issuer's credit quality (knows also as credit spread).</p>
+      <p><span><b>The dirty price</b></span> also named the full coupon price is the price that a buyer must pay to afford it. This price includes the accrued interests since the last coupon payment. These interests are due to the seller.</p>
+      <p><span><b>The clean price</b></span> is the price without the accrued interests. This price make easier the comparison of bonds costliness</p>
+	</div>    
 </body>
 
+<footer>
+	<div class="footer-div">
+      <ul class="footer-list-ul">
+        <li><a class="footer-item-a" href="#">About me</a></li>
+        <li><a class="footer-item-a" href="#">Contact me</a></li>
+        <li><a class="footer-item-a" href="#">Legal</a></li>
+      </ul>
+	</div> 
 
-</html>
+</footer>
+</html> 
